@@ -1,0 +1,3 @@
+ansible
+openstacksdk
+selinux

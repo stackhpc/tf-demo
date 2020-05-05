@@ -1,0 +1,18 @@
+cloud: "openstack" # cloud name in ~/.config/openstack/clouds.yaml to use
+ssh_key_file: "~/.ssh/id_rsa.pub" # key to put on nodes
+instance_prefix: "example" #  prefix for nodes
+partition_name: "compute" # partition name
+address_space:  "192.168.41.0/24" # subnet address range in CIDR notation
+compute_image: "CentOS 7.7"
+compute_flavor: hotdog
+floatingip_pool: "internet"
+ssh_user_name: "centos"
+num_compute: 2
+cluster_packages:
+ - gnu8-compilers-ohpc
+ - openmpi3-gnu8-ohpc
+ - ohpc-gnu8-perf-tools # perf-tools not available for gnu7
+ - git
+ - wget
+ - cmake
+ 

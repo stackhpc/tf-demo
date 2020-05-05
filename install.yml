@@ -1,0 +1,68 @@
+- name: pre-slurm setup
+  hosts: all
+  become: yes
+  tasks:
+    - name: install rng-tools
+      yum:
+        name: rng-tools
+        state: present
+    - name: start rngd
+      systemd:
+        name: rngd
+        state: started
+    - name: Generate /etc/hosts file content
+      set_fact:
+        etc_hosts_content: |
+          {% for host in ansible_play_hosts %}{{ hostvars[host]['ansible_default_ipv4']['address'] }} {{ host }}.novalocal {{ host }}
+          {% endfor %}
+      run_once: true
+    - name: Create entries in /etc/hosts for all nodes
+      blockinfile:
+        path: /etc/hosts
+        create: no
+        state: present
+        block: "{{ hostvars[ansible_play_hosts[0]].etc_hosts_content }}"
+
+- name: setup nfs
+  hosts: all
+  tags:
+    - nfs
+  become: yes
+  tasks:
+  - include_role:
+      name: stackhpc.nfs
+    vars:
+      nfs_enable:
+        server: "{{ inventory_hostname in groups['slurm_control'] }}"
+        clients: "{{ inventory_hostname in groups['slurm_compute'] }}"
+      nfs_export: "/mnt/nfs"
+      nfs_server: "{{ hostvars[groups['slurm_control'][0]].ansible_host }}"
+      nfs_client_mnt_point: "/mnt/nfs"
+  # TODO: could do with chowning /mnt/nfs to centos for ease of use really
+
+- name: install, configure and start openhpc slurm
+  hosts: all
+  become: yes
+  tags:
+    - slurm
+  vars:
+    openhpc_repo_url: "https://github.com/openhpc/ohpc/releases/download/v1.3.GA/ohpc-release-1.3-1.el7.x86_64.rpm"
+  tasks:
+    - name: Install OpenHPC repository
+      yum:
+        name: "{{ openhpc_repo_url }}"
+        state: present
+    - include_role:
+        name: stackhpc.openhpc
+      vars:
+        openhpc_enable:
+          control: "{{ inventory_hostname in groups['slurm_control'] }}"
+          batch: "{{ inventory_hostname in groups['slurm_compute'] }}"
+          runtime: true
+        openhpc_slurm_service_enabled: true
+        openhpc_slurm_control_host: "{{ groups['slurm_control'][0] }}"
+        openhpc_slurm_partitions:
+          - name: "{{ partition_name }}"
+            num_nodes: "{{ num_compute }}"
+        openhpc_cluster_name: "{{ instance_prefix }}" # instances HAVE to be in a group named "{{openhpc_cluster_name}}_{{partition.name}}"
+        openhpc_packages: "{{ cluster_packages }}"
