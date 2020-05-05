@@ -32,7 +32,7 @@ sudo yum install -y unzip
 
 Now clone this repo:
 ```shell
-git clone TODO:
+git clone git@github.com:stackhpc/tf-demo.git
 ```
 
 Make and activate a virtualenv, and install ansible, the openstack sdk and an selinux shim via `pip`:
