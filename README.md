@@ -1,7 +1,7 @@
 Example of using [Terraform](https://www.terraform.io/) with the [`stackhpc.openhpc`](https://galaxy.ansible.com/stackhpc/openhpc) Ansible role to deploy a Slurm cluster with a shared NFS-exported fileystem.
 
 This demonstrates:
-- Using ansible configuration (in this case, `group_vars/all.yml`) as input for terraform so there is a single source of config.
+- Using ansible configuration (`group_vars/all.yml`) as input for terraform so there is a single source of config.
 - Adding the terraform control hostname and path of the terraform working dir to the deployed nodes' metadata - this is available in Horizon and helps work out where to go to modify those hosts!
 
 # TODO
@@ -35,7 +35,7 @@ Now clone this repo:
 git clone git@github.com:stackhpc/tf-demo.git
 ```
 
-Make and activate a virtualenv, and install ansible, the openstack sdk and an selinux shim via `pip`:
+Make and activate a virtualenv, then install ansible, the openstack sdk and an selinux shim via `pip`:
 ```shell
 cd tf-demo
 virtualenv .venv
@@ -44,7 +44,7 @@ pip install -U pip
 pip install -U -r requirements.txt # ansible, openstack sdk and selinux shim
 ```
 
-Install StackHPC's ansible roles from ansible-galaxy: https://galaxy.ansible.com/stackhpc:
+Install StackHPC's ansible roles from ansible-galaxy (https://galaxy.ansible.com/stackhpc):
 ```shell
 ansible-galaxy install -r requirements.yml
 ```
@@ -57,13 +57,13 @@ unzip terraform*.zip
 sudo cp terraform /bin # or ~/.bin or wherever is on your path
 ```
 
-Create a [`clouds.yaml`](https://docs.openstack.org/openstacksdk/latest/user/config/configuration.html#config-files) with your credentials for the Openstack project to use - see `clouds.yaml.example` if necessary.
+Create a [`clouds.yaml`](https://docs.openstack.org/openstacksdk/latest/user/config/configuration.html#config-files) file with your credentials for the Openstack project to use - see `clouds.yaml.example` if necessary.
 
 TODO: keypair?
 
 # Deployment and Configuration
 
-Modify `group_vars/all.yml` appropriately then deploy using Terraform:
+Modify `group_vars/all.yml` appropriately then deploy infrastructure using Terraform:
 
 ```shell
 cd tf-demo
@@ -72,7 +72,7 @@ terraform plan
 terraform apply
 ```
 
-Then install/configure using Ansible:
+Then install and configure nodes using Ansible:
 ```shell
 . .venv/bin/activate
 ansible-playbook -i inventory install.yml
