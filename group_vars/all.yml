@@ -1,5 +1,5 @@
-cloud: "openstack" # cloud name in ~/.config/openstack/clouds.yaml to use
-ssh_key_file: "~/.ssh/id_rsa.pub" # key to put on nodes
+cloud: "openstack" # Openstack cloud name in clouds.yaml to use
+ssh_key_file: "~/.ssh/id_rsa.pub" # key to put on nodes - must exist
 instance_prefix: "dummy" #  prefix for nodes
 partition_name: "compute" # partition name
 address_space:  "192.168.41.0/24" # subnet address range in CIDR notation
@@ -8,10 +8,10 @@ compute_flavor: hotdog
 floatingip_pool: "internet"
 ssh_user_name: "centos"
 num_compute: 2
-cluster_packages:
+cluster_packages: # example pacakges for a useful slurm cluster
  - gnu8-compilers-ohpc
  - openmpi3-gnu8-ohpc
- - ohpc-gnu8-perf-tools # perf-tools not available for gnu7
+ - ohpc-gnu8-perf-tools
  - git
  - wget
  - cmake

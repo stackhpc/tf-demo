@@ -4,9 +4,6 @@ This demonstrates:
 - Using ansible configuration (`group_vars/all.yml`) as input for terraform so there is a single source of config.
 - Adding the terraform control hostname and path of the terraform working dir to the deployed nodes' metadata - this is available in Horizon and helps work out where to go to modify those hosts!
 
-# TODO
-- Add instructions for TF auth and VM keys
-
 # Setup Deloyment Environment
 
 Your deployment environment should have the following commands available:
