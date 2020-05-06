@@ -5,7 +5,6 @@ This demonstrates:
 - Adding the terraform control hostname and path of the terraform working dir to the deployed nodes' metadata - this is available in Horizon and helps work out where to go to modify those hosts!
 
 # TODO
-- Change tf path in metadata to path to statefile? Think that's what we really care about here.
 - Add instructions for TF auth and VM keys
 
 # Setup Deloyment Environment
@@ -59,9 +58,9 @@ sudo cp terraform /bin # or ~/.bin or wherever is on your path
 
 Create a [`clouds.yaml`](https://docs.openstack.org/openstacksdk/latest/user/config/configuration.html#config-files) file with your credentials for the Openstack project to use - see `clouds.yaml.example` if necessary.
 
-TODO: keypair?
-
 # Deployment and Configuration
+
+If you want to use a new ssh keypair to connect to the nodes, create it now.
 
 Modify `group_vars/all.yml` appropriately then deploy infrastructure using Terraform:
 
