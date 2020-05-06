@@ -103,8 +103,7 @@ data "template_file" "inventory" {
 ${openstack_compute_instance_v2.control.name} ansible_host=${openstack_compute_instance_v2.control.network[0].fixed_ip_v4}
 EOT
       computes = <<EOT
-%{ for compute in openstack_compute_instance_v2.compute}
-${compute.name} ansible_host=${compute.network[0].fixed_ip_v4}
+%{ for compute in openstack_compute_instance_v2.compute}${compute.name} ansible_host=${compute.network[0].fixed_ip_v4}
 %{ endfor }
 EOT
       instance_prefix = local.config.instance_prefix
