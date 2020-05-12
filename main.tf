@@ -19,7 +19,7 @@ default = "192.168.41.0/24"
 }
 
 variable "compute_image" {
-  default = "CentOS 8.1"
+  default = "CentOS 7.7"
 }
 
 variable "compute_flavor" {
