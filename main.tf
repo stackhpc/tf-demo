@@ -88,6 +88,6 @@ resource "openstack_networking_router_interface_v2" "net" {
   subnet_id = openstack_networking_subnet_v2.net.id
 }
 
-output "instance_ip_addr" {
+output "proxy_ip_addr" {
   value = openstack_compute_floatingip_associate_v2.fip.floating_ip
 }
