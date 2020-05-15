@@ -4,89 +4,51 @@ This demonstrates:
 - Using ansible configuration (`group_vars/all.yml`) as input for terraform so there is a single source of config.
 - Adding the terraform control hostname and path of the terraform working dir to the deployed nodes' metadata - this is available in Horizon and helps work out where to go to modify those hosts!
 
-# Setup Deloyment Environment
+# Deployment Host Setup
 
-Your deployment environment should have the following commands available:
-- `git`
-- `python`
-- `pip`
-- `virtualenv`
-- `wget`
-- `unzip`
+The host we're using for the workshop already has several things set up:
+- `git`, `python`, `pip`, `virtualenv`, `wget` and `unzip` installed.
+- A virtualenv at `~/venv` which has `openstacksdk` and `ansible` installed.
+- `terraform` installed.
+- An openstack rc file and a `~/.config/openstack/clouds.yaml` file to authenticate against openstack.
+- Ansible galaxy roles downloaded to `~/.ansible/roles`
+- An ssh keypair at `~/.ssh/id_rsa{.pub}`.
 
-If on centos7 with sudo rights you can run:
+To avoid treading on other's work, create your own directory and work in that:
 
-```shell
-sudo yum install -y epel-release
-sudo yum install -y git
-sudo yum install -y python-pip
-sudo pip install -U pip # updates pip
-sudo pip install virtualenv
-sudo yum install -y wget
-sudo yum install -y unzip
-```
+    cd
+    . ~/venv/bin/activate   # makes openstack and ansible available
+    mkdir <yourname>
+    cd <yourname>
+    git clone https://github.com/stackhpc/tf-demo.git   # this repo
+    cd tf-demo
 
-Now clone this repo:
-```shell
-git clone git@github.com:stackhpc/tf-demo.git
-```
-
-Make and activate a virtualenv, then install ansible, the openstack sdk and an selinux shim via `pip`:
-```shell
-cd tf-demo
-virtualenv .venv
-. .venv/bin/activate
-pip install -U pip
-pip install -U -r requirements.txt # ansible, openstack sdk and selinux shim
-```
-
-Install StackHPC's ansible roles from ansible-galaxy (https://galaxy.ansible.com/stackhpc):
-```shell
-ansible-galaxy install -r requirements.yml
-```
-(Note the versions of these are pinned - not essential here but good practice!)
-
-Install terraform:
-```shell
-wget https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
-unzip terraform*.zip
-sudo cp terraform /bin # or ~/.bin or wherever is on your path
-```
-
-Create a [`clouds.yaml`](https://docs.openstack.org/openstacksdk/latest/user/config/configuration.html#config-files) file with your credentials for the Openstack project to use - see `clouds.yaml.example` if necessary.
 
 # Deployment and Configuration
 
-If you want to use a new ssh keypair to connect to the nodes, create it now.
+1. In `group_vars/all.yml`, change `instance_prefix` to your name.
 
-Modify `group_vars/all.yml` appropriately then deploy infrastructure using Terraform:
+2. Deploy infrastructure using Terraform:
 
-```shell
-cd tf-demo
-terraform init
-terraform plan
-terraform apply
-```
+        terraform init
+        terraform plan
+        terraform apply
 
-Then install and configure nodes using Ansible:
-```shell
-. .venv/bin/activate
-ansible-playbook -i inventory install.yml
-```
+   This will generate a file `./inventory`.
 
-This will generate a file `inventory`.
+3. Install and configure software using Ansible:
+    
+        ansible-playbook -i inventory install.yml
 
-To log in to the cluster:
-```shell
-ssh <ansible_ssh_common_args> centos@<slurm_control_ip>
-```
-where:
-- `ansible_ssh_common_args` is given in the `inventory`
-- `slurm_control_ip` is from the `ansible_host` parameter for the `slurm_control` node in the `inventory`
+    The created cluster will have a shared NFS filesystem at `/mnt/nfs`.
 
-The created cluster will have a shared NFS filesystem at `/mnt/nfs`.
+4. To log in to the cluster use:
 
-To destroy the cluster when done:
-```shell
-terraform destroy
-```
+        ssh centos@<ssh_proxy>
+
+   where `ssh_proxy` is given in the inventory.
+    
+
+5. To destroy the cluster when done:
+
+        terraform destroy
