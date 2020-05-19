@@ -6,7 +6,8 @@ control_image: "ohpc-control-v0" #"Memset - CentOS 7 (2019-04-02)"
 compute_image: "ohpc-compute-v1" #"Memset - CentOS 7 (2019-04-02)"
 compute_flavor: MSOS004
 control_flavor: MSOS004
-network: "ospstackac2-du-net1"
+network: "ospstackac2-tv-net1" # jumphost2
+#network: "ospstackac2-du-net1"  # jumphost1
 ssh_user_name: "centos"
 num_compute: 2
 cluster_packages: # example pacakges for a useful slurm cluster
