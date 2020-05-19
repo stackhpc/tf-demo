@@ -38,6 +38,7 @@ To avoid treading on other's work, create your own directory and work in that:
 
 3. Install and configure software using Ansible:
     
+        . ~/venv/bin/activate
         ansible-playbook -i inventory install.yml
 
     The created cluster will have a shared NFS filesystem at `/mnt/nfs`.
