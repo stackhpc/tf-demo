@@ -1,3 +1,3 @@
 ansible
-openstacksdk
+openstacksdk==0.40
 selinux
