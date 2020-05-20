@@ -6,27 +6,25 @@ This demonstrates:
 
 # Deployment Host Setup
 
-The host we're using for the workshop already has several things set up:
+The hosts we're using for the workshop already have several things set up:
 - `git`, `python`, `pip`, `virtualenv`, `wget` and `unzip` installed.
 - A virtualenv at `~/venv` which has `openstacksdk` and `ansible` installed.
 - `terraform` installed.
 - An openstack rc file and a `~/.config/openstack/clouds.yaml` file to authenticate against openstack.
-- Ansible galaxy roles downloaded to `~/.ansible/roles`
 - An ssh keypair at `~/.ssh/id_rsa{.pub}`.
 
-To avoid treading on other's work, create your own directory and work in that:
+To complete setup we just need to clone this repo and download the Ansible roles it needs from Ansible Galaxy:
 
     cd
     . ~/venv/bin/activate   # makes openstack and ansible available
-    mkdir <yourname>
-    cd <yourname>
     git clone https://github.com/stackhpc/tf-demo.git   # this repo
     cd tf-demo
+    ansible-galaxy install -r requirements.yml
 
 
 # Deployment and Configuration
 
-1. In `group_vars/all.yml`, change `instance_prefix` to your name.
+1. In `group_vars/all.yml`, change `instance_prefix` to your name or `lab*` username.
 
 2. Deploy infrastructure using Terraform:
 
@@ -35,6 +33,8 @@ To avoid treading on other's work, create your own directory and work in that:
         terraform apply
 
    This will generate a file `./inventory`.
+
+Wait a couple of minutes for the instances to boot.
 
 3. Install and configure software using Ansible:
     
