@@ -13,8 +13,5 @@ num_compute: 2
 cluster_packages: # example pacakges for a useful slurm cluster
  - gnu8-compilers-ohpc
  - openmpi3-gnu8-ohpc
- - ohpc-gnu8-perf-tools
  - git
  - wget
- - cmake
- 
