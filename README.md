@@ -24,7 +24,9 @@ To complete setup we just need to clone this repo and download the Ansible roles
 
 # Deployment and Configuration
 
-1. In `group_vars/all.yml`, change `instance_prefix` to your name or `lab*` username.
+1. In `group_vars/all.yml`:
+   - Change `instance_prefix` to your name or `lab*` username.
+   - Comment/uncomment the appropriate `network` for the jumphost you're on
 
 2. Deploy infrastructure using Terraform:
 
